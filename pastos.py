@@ -84,7 +84,7 @@ def req_query(query: str, gcse_id: str, api_key: str, debug: bool, start: int = 
 
 
 def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, out_json_file:str) -> None:
-    json_results = []
+    json_results = {}
 
     for search in searches:
         search = f'"{search}"'
@@ -98,10 +98,10 @@ def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, ou
             continue
         
         # If here, something was found
-        json_results.append({
+        json_results[search] = {
             "name": search,
             "links": [ {"link": res["link"], "snippet": res["snippet"]} for res in results]
-        })
+        }
     
         print("")
         print(f"{Fore.YELLOW}[u] {Fore.BLUE}{search}")
