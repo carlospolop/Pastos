@@ -83,15 +83,14 @@ def req_query(query: str, gcse_id: str, api_key: str, debug: bool, start: int = 
         return results, url
 
 
-def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, out_json:bool) -> None:
+def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, out_json_file:str) -> None:
     json_results = []
 
     for search in searches:
         search = f'"{search}"'
 
-        if not out_json:
-            print(f"Searching: {Fore.GREEN}{search}{Style.RESET_ALL}")
-            print("")
+        print(f"Searching: {Fore.GREEN}{search}{Style.RESET_ALL}")
+        print("")
 
         results, url = req_query(search, gcse_id, api_key, debug)
 
@@ -99,27 +98,25 @@ def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, ou
             continue
         
         # If here, something was found
-        if out_json:
-            json_results.append({
-                "name": search,
-                "links": [ {"link": res["link"], "snippet": res["snippet"]} for res in results]
-            })
-        
-        else:
-            print("")
-            print(f"{Fore.YELLOW}[u] {Fore.BLUE}{search}")
-            print(f"{Fore.YELLOW}[i] {Fore.BLUE}Links:{Style.RESET_ALL}")
-            for res in results:
-                print(res["link"])
+        json_results.append({
+            "name": search,
+            "links": [ {"link": res["link"], "snippet": res["snippet"]} for res in results]
+        })
+    
+        print("")
+        print(f"{Fore.YELLOW}[u] {Fore.BLUE}{search}")
+        print(f"{Fore.YELLOW}[i] {Fore.BLUE}Links:{Style.RESET_ALL}")
+        for res in results:
+            print(res["link"])
 
-            print("")
+        print("")
         
-        if not out_json:
-            print("==================================")
-            print("")
+        print("==================================")
+        print("")
 
-    if out_json:
-        print(json.dumps(json_results))
+    if out_json_file:
+        with open("results.json", "w") as f:
+            json.dump(json_results, f)
 
 def main():
     parser = argparse.ArgumentParser(description='Search google dorks in the specified GCSE id')
@@ -127,18 +124,17 @@ def main():
     parser.add_argument('--api-key', help='API key', required=True)
     parser.add_argument('--search', help='Comma Separated list of things to search in paste webs', required=True)
     parser.add_argument('--debug', help='Debug', default=False, action='store_true')
-    parser.add_argument('--json', help='Print only json results at then end', default=False, action='store_true')
+    parser.add_argument('--json-file', help='Print only json results at then end', default=False, action='store_true')
 
     args = parser.parse_args()
     api_key = args.api_key
     searches = args.search.split(",")
     debug = args.debug
-    out_json = args.json
+    out_json_file = args.json_file
 
     # Search each search
-    check_pastes(searches, cseid, api_key, debug, out_json)
+    check_pastes(searches, cseid, api_key, debug, out_json_file)
 
 
 if __name__ == "__main__":
     main()
-
