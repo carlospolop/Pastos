@@ -115,7 +115,7 @@ def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, ou
         print("")
 
     if out_json_file:
-        with open("results.json", "w") as f:
+        with open(out_json_file, "w") as f:
             json.dump(json_results, f)
 
 def main():
@@ -124,7 +124,7 @@ def main():
     parser.add_argument('--api-key', help='API key', required=True)
     parser.add_argument('--search', help='Comma Separated list of things to search in paste webs', required=True)
     parser.add_argument('--debug', help='Debug', default=False, action='store_true')
-    parser.add_argument('--json-file', help='Print only json results at then end', default=False, action='store_true')
+    parser.add_argument('--json-file', help='Store json results in indicated file')
 
     args = parser.parse_args()
     api_key = args.api_key
