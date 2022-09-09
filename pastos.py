@@ -119,7 +119,7 @@ def check_pastes(searches: List[str], gcse_id: str, api_key: str, debug:bool, ou
             json.dump(json_results, f)
 
 def main():
-    parser = argparse.ArgumentParser(description='Search google dorks in the specified GCSE id')
+    parser = argparse.ArgumentParser(description='Search for strings in paste sites.')
     cseid = "737425e5642448a6c" # My custom search engine id with domains used for pastes
     parser.add_argument('--api-key', help='API key', required=True)
     parser.add_argument('--search', help='Comma Separated list of things to search in paste webs', required=True)
