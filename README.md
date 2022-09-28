@@ -1,5 +1,7 @@
 # Pastos
 
+![](pastos.jpeg)
+
 **Search pastes in tens of webs in seconds with GCSE.**
 
 ## Quick Start
